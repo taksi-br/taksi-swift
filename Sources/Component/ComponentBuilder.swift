@@ -15,7 +15,9 @@ public final class ComponentBuilder: ComponentBuilderProtocol {
 
     public func component(from decoder: Decoder, withName name: String) -> (any Component)? {
         return features
-            .compactMap { $0.component(from: decoder, withName: name) }
+            .compactMap {
+                return $0.component(from: decoder, withName: name)
+            }
             .first
     }
 }

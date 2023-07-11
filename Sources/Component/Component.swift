@@ -2,6 +2,8 @@
 
 import Foundation
 
+public struct ComponentDecodingError: Error {}
+
 public final class AnyComponent: Decodable {
     public static var builder: ComponentBuilderProtocol?
 
@@ -9,20 +11,19 @@ public final class AnyComponent: Decodable {
         case name
     }
 
-    public let component: (any Component)?
+    public let component: any Component
 
-    public init(component: (any Component)?) {
+    public init(component: any Component) {
         self.component = component
     }
 
     public required init(from decoder: Decoder) throws {
-        do {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let name = try container.decode(String.self, forKey: .name)
-            component = Self.builder?.component(from: decoder, withName: name)
-        } catch {
-            component = nil
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let name = try container.decode(String.self, forKey: .name)
+        guard let component = Self.builder?.component(from: decoder, withName: name) else {
+            throw ComponentDecodingError()
         }
+        self.component = component
     }
 }
 
