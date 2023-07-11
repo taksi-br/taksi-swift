@@ -3,6 +3,6 @@
 import Foundation
 
 public protocol TaksiAPIClient {
-    func fetchNavigationFlow(for path: String) async -> AnyNavigationFlow?
+    func fetchAction(for path: String) async -> AnyAction?
     func fetchComponentsData(for path: String, using decoder: JSONDecoder) async -> [ComponentData]
 }

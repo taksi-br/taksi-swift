@@ -3,7 +3,7 @@
 import Foundation
 
 public protocol TaksiServiceProtocol {
-    func fetchInitialFlow(for path: String) async -> NavigationFlow?
+    func fetchInitialAction(for path: String) async -> Action?
     func updateDynamicComponentsData(for components: [any Component], fetching path: String) async
 }
 
@@ -14,8 +14,8 @@ public final class TaksiService: TaksiServiceProtocol {
         self.apiClient = apiClient
     }
 
-    public func fetchInitialFlow(for path: String) async -> NavigationFlow? {
-        return await apiClient.fetchNavigationFlow(for: path)?.navigationFlow
+    public func fetchInitialAction(for path: String) async -> Action? {
+        return await apiClient.fetchAction(for: path)?.action
     }
 
     public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async {

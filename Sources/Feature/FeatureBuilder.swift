@@ -3,14 +3,14 @@
 import Foundation
 
 public final class FeatureBuilder {
-    private let navigationFlowBuilder: NavigationFlowBuilderProtocol
+    private let actionBuilder: ActionBuilderProtocol
     private let componentBuilder: ComponentBuilderProtocol
 
     public init(features: [FeatureProtocol]) {
-        navigationFlowBuilder = NavigationFlowBuilder(features: features)
+        actionBuilder = ActionBuilder(features: features)
         componentBuilder = ComponentBuilder(features: features)
         
-        AnyNavigationFlow.builder = navigationFlowBuilder
+        AnyAction.builder = actionBuilder
         AnyComponent.builder = componentBuilder
     }
 }
