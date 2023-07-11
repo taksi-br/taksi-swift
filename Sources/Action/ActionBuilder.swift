@@ -15,13 +15,9 @@ public final class ActionBuilder: ActionBuilderProtocol {
 
     public func action(from decoder: Decoder, with identifier: String) -> Action? {
         return features
-<<<<<<< Updated upstream
-            .compactMap { $0.action(from: decoder, with: identifier) }
-=======
             .compactMap {
                 return $0.action(from: decoder, with: identifier)
             }
->>>>>>> Stashed changes
             .first
     }
 }
