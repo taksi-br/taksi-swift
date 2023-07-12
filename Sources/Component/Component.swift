@@ -31,9 +31,11 @@ public protocol Component: AnyObject {
     associatedtype Content: ComponentContent
 
     var identifier: String { get }
-    var requiresData: Bool { get }
+    var requiresData: Bool { get set }
     var content: Content { get }
 }
+
+public protocol DecodableComponentProtocol: Component, Decodable {}
 
 public protocol ComponentContent {}
 
