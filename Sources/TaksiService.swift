@@ -4,6 +4,7 @@ import Foundation
 
 public protocol TaksiServiceProtocol {
     func fetchInitialAction(for path: String) async -> Action?
+    func fetchInitialComponents(for path: String) async -> [any Component]
     func updateDynamicComponentsData(for components: [any Component], fetching path: String) async
 }
 
@@ -16,6 +17,10 @@ public final class TaksiService: TaksiServiceProtocol {
 
     public func fetchInitialAction(for path: String) async -> Action? {
         return await apiClient.fetchAction(for: path)?.action
+    }
+
+    public func fetchInitialComponents(for path: String) async -> [any Component] {
+        return await apiClient.fetchComponents(for: path).map(\.component)
     }
 
     public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async {
@@ -39,7 +44,8 @@ public final class TaksiService: TaksiServiceProtocol {
             guard let match else {
                 return
             }
-            
+
+            match.requiresData = false
             match.update(using: componentData.dynamicData)
         }
     }

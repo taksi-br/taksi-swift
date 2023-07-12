@@ -35,9 +35,9 @@ public protocol Component: AnyObject {
     var content: Content { get }
 }
 
-public protocol DecodableComponentProtocol: Component, Decodable {}
-
 public protocol ComponentContent {}
+
+public protocol DecodableComponentProtocol: Component, Decodable {}
 
 public protocol DynamicComponent: Component where Content: DynamicComponentContent {
     var content: Content { get set }
