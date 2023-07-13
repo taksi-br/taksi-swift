@@ -38,10 +38,12 @@ public final class AnyComponent: Decodable {
 
 public protocol Component: AnyObject {
     associatedtype Content: ComponentContent
+    associatedtype View: ComponentView
 
     var identifier: String { get }
     var requiresData: Bool { get set }
     var content: Content { get }
+    func view(renderMode: ComponentViewRenderModeBinding) -> View?
 }
 
 public protocol ComponentContent {}
@@ -75,7 +77,7 @@ public protocol DynamicComponentContent: ComponentContent {
 
 public protocol DynamicComponentData: Decodable {}
 
-open class BaseComponent<Content: ComponentContent>: Component {
+open class BaseComponent<Content: ComponentContent, View: ComponentView>: Component {
     public let identifier: String
     public var requiresData: Bool
     public var content: Content
@@ -85,9 +87,15 @@ open class BaseComponent<Content: ComponentContent>: Component {
         self.requiresData = requiresData
         self.content = content
     }
+
+    public func view(renderMode: ComponentViewRenderModeBinding) -> View? {
+        return nil
+    }
 }
 
-open class DecodableBaseComponent<Content: ComponentContent & Decodable>: BaseComponent<Content>, DecodableComponentProtocol {
+open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: ComponentView>:
+    BaseComponent<Content, View>,
+    DecodableComponentProtocol {
     private enum CodingKeys: String, CodingKey {
         case identifier
         case requiresData = "requires_data"

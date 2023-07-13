@@ -4,7 +4,7 @@ import Foundation
 
 public protocol TaksiServiceProtocol {
     func fetchInitialComponents(for path: String) async -> [any Component]
-    func updateDynamicComponentsData(for components: [any Component], fetching path: String) async
+    func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]
 }
 
 public final class TaksiService: TaksiServiceProtocol {
@@ -18,12 +18,12 @@ public final class TaksiService: TaksiServiceProtocol {
         return await apiClient.fetchInterface(for: path).components.map(\.component)
     }
 
-    public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async {
+    public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component] {
         let dynamicComponents = components.compactMap {
             return $0 as? any DynamicComponent
         }
         guard !dynamicComponents.isEmpty else {
-            return
+            return components
         }
         
         let decoder = JSONDecoder()
@@ -43,5 +43,7 @@ public final class TaksiService: TaksiServiceProtocol {
             match.requiresData = false
             match.update(using: componentData.dynamicData)
         }
+
+        return components
     }
 }
