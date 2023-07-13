@@ -7,6 +7,6 @@ public protocol FeatureProtocol {
     func component(from decoder: Decoder, withName name: String) -> (any Component)?
 }
 
-public protocol NavigableFeatureProtocol {
-    func navigationAction(from decoder: Decoder, withScreenIdentifier screenIdentifier: String) -> NavigationAction?
+public protocol NavigableFeatureProtocol: FeatureProtocol {
+    func navigationAction(from decoder: Decoder, withinterfaceIdentifier interfaceIdentifier: String) -> NavigationAction?
 }

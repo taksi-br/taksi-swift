@@ -3,39 +3,57 @@
 import Foundation
 import JSEN
 
-class CollectionComponent: DecodableBaseComponent<CollectionComponent.Content>, DynamicComponent {
-    struct Content: DynamicComponentContent, Decodable {
-        struct DynamicData: DynamicComponentData {
-            private enum CodingKeys: String, CodingKey {
-                case values
-            }
+public class CollectionComponent: DecodableBaseComponent<CollectionComponent.Content, CollectionComponentView>, DynamicComponent {
+    public override func view(renderMode: ComponentViewRenderModeBinding) -> View? {
+        return CollectionComponentView(component: self, renderMode: renderMode)
+    }
+}
 
-            fileprivate let dictionary: [[String: Any]]
-            var values: [any Component] = []
-
-            init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-
-                let valuesContents = try container.decode([JSEN].self, forKey: .values)
-                dictionary = valuesContents.map(\.dictionary)
-            }
-        }
-
+extension CollectionComponent {
+    public struct Content: DynamicComponentContent, Decodable {
         private enum CodingKeys: String, CodingKey {
             case componentName = "component_name"
         }
 
         private let componentName: String
-        var dynamicData: DynamicData
+        public var dynamicData: DynamicData
 
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             componentName = try container.decode(String.self, forKey: .componentName)
             dynamicData = try DynamicData(from: decoder)
+            dynamicData.updateValues(componentName: componentName)
         }
 
-        mutating func update(using dynamicData: DynamicData) {
-            self.dynamicData.values = dynamicData.dictionary.compactMap {
+        mutating public func update(using dynamicData: DynamicData) {
+            self.dynamicData.dictionary = dynamicData.dictionary
+            self.dynamicData.updateValues(componentName: componentName)
+        }
+    }
+}
+
+extension CollectionComponent.Content {
+    public struct DynamicData: DynamicComponentData, Equatable {
+        private enum CodingKeys: String, CodingKey {
+            case values
+        }
+
+        fileprivate var dictionary: [[String: Any]]
+        public var values: [any Component] = []
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            let valuesContents = try container.decode([JSEN].self, forKey: .values)
+            dictionary = valuesContents.map(\.dictionary)
+        }
+
+        public static func == (lhs: CollectionComponent.Content.DynamicData, rhs: CollectionComponent.Content.DynamicData) -> Bool {
+            return lhs.values.map(\.identifier) == rhs.values.map(\.identifier)
+        }
+
+        fileprivate mutating func updateValues(componentName: String) {
+            values = dictionary.compactMap {
                 return try? AnyComponent(componentName: componentName, from: $0).component
             }
         }

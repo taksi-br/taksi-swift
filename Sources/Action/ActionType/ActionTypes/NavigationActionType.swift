@@ -5,25 +5,25 @@ import Foundation
 final class NavigationActionType: ActionType {
     private struct Content: Decodable {
         private enum CodingKeys: String, CodingKey {
-            case screenIdentifier = "screen_identifier"
+            case interfaceIdentifier = "interface_identifier"
         }
 
-        let screenIdentifier: String
+        let interfaceIdentifier: String
     }
 
     private enum CodingKeys: CodingKey {
         case content
     }
 
-    let screenIdentifier: String
+    let interfaceIdentifier: String
 
-    init(screenIdentifier: String) {
-        self.screenIdentifier = screenIdentifier
+    init(interfaceIdentifier: String) {
+        self.interfaceIdentifier = interfaceIdentifier
     }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        screenIdentifier = try container.decode(Content.self, forKey: .content).screenIdentifier
+        interfaceIdentifier = try container.decode(Content.self, forKey: .content).interfaceIdentifier
     }
 }
 
