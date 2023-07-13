@@ -20,7 +20,7 @@ public final class AnyAction: Decodable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let identifier = try container.decode(String.self, forKey: .identifier)
-        guard let action = Self.builder?.action(from: decoder, with: identifier) else {
+        guard let action = Self.builder?.action(from: decoder, withIdentifier: identifier) else {
             throw ActionDecodingError()
         }
         self.action = action
@@ -28,3 +28,5 @@ public final class AnyAction: Decodable {
 }
 
 public protocol Action: AnyObject {}
+
+public protocol DecodableActionProtocol: Action, Decodable {}

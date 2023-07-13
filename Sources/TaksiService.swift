@@ -3,7 +3,7 @@
 import Foundation
 
 public protocol TaksiServiceProtocol {
-    func fetchInitialAction(for path: String) async -> Action?
+    func fetchInitialComponents(for path: String) async -> [any Component]
     func updateDynamicComponentsData(for components: [any Component], fetching path: String) async
 }
 
@@ -14,8 +14,8 @@ public final class TaksiService: TaksiServiceProtocol {
         self.apiClient = apiClient
     }
 
-    public func fetchInitialAction(for path: String) async -> Action? {
-        return await apiClient.fetchAction(for: path)?.action
+    public func fetchInitialComponents(for path: String) async -> [any Component] {
+        return await apiClient.fetchInterface(for: path).components.map(\.component)
     }
 
     public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async {
@@ -31,7 +31,7 @@ public final class TaksiService: TaksiServiceProtocol {
             ($0.identifier, type(of: $0).dynamicDataType())
         })
         
-        let componentsData = await apiClient.fetchComponentsData(for: path, using: decoder)
+        let componentsData = await apiClient.fetchInterfaceData(for: path, using: decoder).values
         componentsData.forEach { componentData in
             let match = dynamicComponents.first(where: { component in
                 return componentData.identifier == component.identifier
@@ -39,7 +39,8 @@ public final class TaksiService: TaksiServiceProtocol {
             guard let match else {
                 return
             }
-            
+
+            match.requiresData = false
             match.update(using: componentData.dynamicData)
         }
     }

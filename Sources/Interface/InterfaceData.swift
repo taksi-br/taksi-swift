@@ -22,10 +22,12 @@ public enum ComponentDataDecodingError: Error {
 public struct ComponentData: Decodable {
     private enum CodingKeys: String, CodingKey {
         case identifier
+        case requiresData = "requires_data"
         case content
     }
 
     let identifier: String
+    let requiresData: Bool
     let dynamicData: any DynamicComponentData
 
     public init(from decoder: Decoder) throws {
@@ -37,6 +39,7 @@ public struct ComponentData: Decodable {
         
         let identifier = try container.decode(String.self, forKey: .identifier)
         self.identifier = identifier
+        requiresData = try container.decode(Bool.self, forKey: .requiresData)
 
         let dynamicDataType = dynamicDataTypes.first {
             return $0.key == identifier
