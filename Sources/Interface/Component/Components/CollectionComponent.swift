@@ -4,33 +4,13 @@ import Foundation
 import JSEN
 
 public class CollectionComponent: DecodableBaseComponent<CollectionComponent.Content, CollectionComponentView>, DynamicComponent {
+    public override func view(renderMode: ComponentViewRenderModeBinding) -> View? {
+        return CollectionComponentView(component: self, renderMode: renderMode)
+    }
+}
+
+extension CollectionComponent {
     public struct Content: DynamicComponentContent, Decodable {
-        public struct DynamicData: DynamicComponentData, Equatable {
-            private enum CodingKeys: String, CodingKey {
-                case values
-            }
-
-            fileprivate var dictionary: [[String: Any]]
-            public var values: [any Component] = []
-
-            public init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-
-                let valuesContents = try container.decode([JSEN].self, forKey: .values)
-                dictionary = valuesContents.map(\.dictionary)
-            }
-
-            public static func == (lhs: CollectionComponent.Content.DynamicData, rhs: CollectionComponent.Content.DynamicData) -> Bool {
-                return lhs.values.map(\.identifier) == rhs.values.map(\.identifier)
-            }
-
-            fileprivate mutating func updateValues(componentName: String) {
-                values = dictionary.compactMap {
-                    return try? AnyComponent(componentName: componentName, from: $0).component
-                }
-            }
-        }
-
         private enum CodingKeys: String, CodingKey {
             case componentName = "component_name"
         }
@@ -50,9 +30,32 @@ public class CollectionComponent: DecodableBaseComponent<CollectionComponent.Con
             self.dynamicData.updateValues(componentName: componentName)
         }
     }
+}
 
-    public override func view(renderMode: ComponentViewRenderModeBinding) -> View? {
-        let viewModel = CollectionComponentView.ViewModel(component: self)
-        return CollectionComponentView(viewModel: viewModel, renderMode: renderMode)
+extension CollectionComponent.Content {
+    public struct DynamicData: DynamicComponentData, Equatable {
+        private enum CodingKeys: String, CodingKey {
+            case values
+        }
+
+        fileprivate var dictionary: [[String: Any]]
+        public var values: [any Component] = []
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            let valuesContents = try container.decode([JSEN].self, forKey: .values)
+            dictionary = valuesContents.map(\.dictionary)
+        }
+
+        public static func == (lhs: CollectionComponent.Content.DynamicData, rhs: CollectionComponent.Content.DynamicData) -> Bool {
+            return lhs.values.map(\.identifier) == rhs.values.map(\.identifier)
+        }
+
+        fileprivate mutating func updateValues(componentName: String) {
+            values = dictionary.compactMap {
+                return try? AnyComponent(componentName: componentName, from: $0).component
+            }
+        }
     }
 }

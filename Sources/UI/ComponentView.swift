@@ -3,8 +3,6 @@
 import Combine
 import SwiftUI
 
-public typealias ComponentViewRenderModeBinding = Binding<ComponentViewRenderMode>
-
 public protocol ComponentView {
     func asSwiftUIView() -> AnyView?
     func asUIKitView() -> UIView?
@@ -23,10 +21,3 @@ public extension ComponentView {
         return self as? UIView
     }
 }
-
-public enum ComponentViewRenderMode {
-    case skeleton
-    case content
-}
-
-public struct EmptyComponentView: ComponentView {}
