@@ -2,8 +2,6 @@
 
 import Foundation
 
-public struct ComponentDecodingError: Error {}
-
 public final class AnyComponent: Decodable {
     public static var builder: ComponentBuilderProtocol?
 
@@ -21,9 +19,20 @@ public final class AnyComponent: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let name = try container.decode(String.self, forKey: .name)
         guard let component = Self.builder?.component(from: decoder, withName: name) else {
-            throw ComponentDecodingError()
+            throw TaksiError.decodingError
         }
         self.component = component
+    }
+
+    public init(componentName: String, from content: [String: Any]) throws {
+        let value: [String: Any] = [
+            "identifier": UUID().uuidString,
+            "name": componentName,
+            "content": content
+        ]
+        let jsonDecoder = JSONDecoder()
+        let data = try JSONSerialization.data(withJSONObject: value)
+        component = try jsonDecoder.decode(AnyComponent.self, from: data).component
     }
 }
 
@@ -65,3 +74,31 @@ public protocol DynamicComponentContent: ComponentContent {
 }
 
 public protocol DynamicComponentData: Decodable {}
+
+open class BaseComponent<Content: ComponentContent>: Component {
+    public let identifier: String
+    public var requiresData: Bool
+    public var content: Content
+
+    init(identifier: String, requiresData: Bool, content: Content) {
+        self.identifier = identifier
+        self.requiresData = requiresData
+        self.content = content
+    }
+}
+
+open class DecodableBaseComponent<Content: ComponentContent & Decodable>: BaseComponent<Content>, DecodableComponentProtocol {
+    private enum CodingKeys: String, CodingKey {
+        case identifier
+        case requiresData = "requires_data"
+        case content
+    }
+
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let identifier = try container.decode(String.self, forKey: .identifier)
+        let requiresData = try container.decodeIfPresent(Bool.self, forKey: .requiresData) ?? false
+        let content = try container.decode(Content.self, forKey: .content)
+        super.init(identifier: identifier, requiresData: requiresData, content: content)
+    }
+}

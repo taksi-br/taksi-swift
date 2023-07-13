@@ -2,8 +2,6 @@
 
 import Foundation
 
-public struct ActionDecodingError: Error {}
-
 public final class AnyAction: Decodable {
     public static var builder: ActionBuilderProtocol?
 
@@ -21,7 +19,7 @@ public final class AnyAction: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let identifier = try container.decode(String.self, forKey: .identifier)
         guard let action = Self.builder?.action(from: decoder, withIdentifier: identifier) else {
-            throw ActionDecodingError()
+            throw TaksiError.decodingError
         }
         self.action = action
     }
