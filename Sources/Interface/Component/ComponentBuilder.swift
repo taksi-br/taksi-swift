@@ -14,10 +14,10 @@ public final class ComponentBuilder: ComponentBuilderProtocol {
     }
 
     public func component(from decoder: Decoder, withName name: String) -> (any Component)? {
-        return features
+        return try? features
             .compactMap {
                 return $0.component(from: decoder, withName: name)
             }
-            .first
+            .first ?? TaksiComponentIdentifier(rawValue: name)?.metatype.init(from: decoder)
     }
 }

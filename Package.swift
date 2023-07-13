@@ -14,9 +14,13 @@ let package = Package(
             ]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/rogerluan/JSEN", .upToNextMajor(from: "1.2.1")),
+    ],
     targets: [
         .target(
             name: "Taksi",
+            dependencies: ["JSEN"],
             path: "Sources"
         ),
         .testTarget(
