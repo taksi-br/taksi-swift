@@ -37,12 +37,12 @@ public final class ActionBuilder: ActionBuilderProtocol {
 
 extension ActionBuilder: ActionTypeVisitor {
     func navigableAction(from actionType: NavigationActionType, using decoder: Decoder) -> Action? {
-        let identifier = actionType.screenIdentifier
+        let identifier = actionType.interfaceIdentifier
         return features.compactMap {
             return $0 as? NavigableFeatureProtocol
         }
         .compactMap {
-            return $0.navigationAction(from: decoder, withScreenIdentifier: identifier)
+            return $0.navigationAction(from: decoder, withinterfaceIdentifier: identifier)
         }
         .first
     }
