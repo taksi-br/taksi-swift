@@ -22,11 +22,11 @@ public final class ActionBuilder: ActionBuilderProtocol {
         if let action = (actionType as? VisitableActionType)?.visit(from: self, using: decoder) {
             return action
         } else {
-            return unknownAction(from: decoder, withIdentifier: identifier)
+            return featureAction(from: decoder, withIdentifier: identifier)
         }
     }
 
-    private func unknownAction(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
+    private func featureAction(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
         return features
             .compactMap {
                 return $0.action(from: decoder, withIdentifier: identifier)
