@@ -1,6 +1,5 @@
 // Created by Mateus Lino
 
-import Combine
 import SwiftUI
 
 public protocol ScreenInterface {

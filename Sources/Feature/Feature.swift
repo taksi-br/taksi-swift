@@ -8,5 +8,5 @@ public protocol FeatureProtocol {
 }
 
 public protocol NavigableFeatureProtocol: FeatureProtocol {
-    func navigationAction(from decoder: Decoder, withinterfaceIdentifier interfaceIdentifier: String) -> NavigationAction?
+    func navigationAction(from decoder: Decoder, withInterfaceIdentifier interfaceIdentifier: String) -> NavigationAction?
 }

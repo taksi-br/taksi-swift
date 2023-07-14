@@ -42,7 +42,7 @@ extension ActionBuilder: ActionTypeVisitor {
             return $0 as? NavigableFeatureProtocol
         }
         .compactMap {
-            return $0.navigationAction(from: decoder, withinterfaceIdentifier: identifier)
+            return $0.navigationAction(from: decoder, withInterfaceIdentifier: identifier)
         }
         .first
     }
