@@ -77,7 +77,7 @@ class ItemComponent: DecodableBaseComponent<ItemComponent.Content, ItemComponent
         struct DynamicData: DynamicComponentData, Equatable {
             var value: String
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case action
         }
@@ -87,7 +87,7 @@ class ItemComponent: DecodableBaseComponent<ItemComponent.Content, ItemComponent
 
         required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            action = try container.decodeIfPresent(AnyAction.self, forKey: .action).action
+            action = try container.decodeIfPresent(AnyAction.self, forKey: .action)?.action
             dynamicData = try DynamicData(from: decoder)
         }
 
@@ -96,8 +96,8 @@ class ItemComponent: DecodableBaseComponent<ItemComponent.Content, ItemComponent
         }
     }
 
-    override func view(onAction: @escaping (Action) -> Void) -> LabelComponentView? {
-        return LabelComponentView(content: content, onAction: onAction)
+    override func view(onAction: @escaping (Action) -> Void) -> ItemComponentView? {
+        return ItemComponentView(content: content, onAction: onAction)
     }
 }
 
@@ -107,7 +107,9 @@ struct ItemComponentView: View, ViewRepresentable {
 
     var body: some View {
         Button(action: {
-            onAction(content.action)
+            if let action = content.action {
+                onAction(action)
+            }
         }) {
             Text(content.dynamicData.value)
         }
