@@ -4,13 +4,13 @@ import Foundation
 import JSEN
 
 public class CollectionComponent: DecodableBaseComponent<CollectionComponent.Content, CollectionComponentView>, DynamicComponent {
-    public override func view(renderMode: ComponentViewRenderModeBinding) -> View? {
-        return CollectionComponentView(component: self, renderMode: renderMode)
+    public override func view(onAction: @escaping (Action) -> Void) -> CollectionComponentView? {
+        return CollectionComponentView(content: content, onAction: onAction)
     }
 }
 
 extension CollectionComponent {
-    public struct Content: DynamicComponentContent, Decodable {
+    public final class Content: DynamicComponentContent, Decodable {
         private enum CodingKeys: String, CodingKey {
             case componentName = "component_name"
         }
@@ -18,14 +18,14 @@ extension CollectionComponent {
         private let componentName: String
         public var dynamicData: DynamicData
 
-        public init(from decoder: Decoder) throws {
+        required public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             componentName = try container.decode(String.self, forKey: .componentName)
             dynamicData = try DynamicData(from: decoder)
             dynamicData.updateValues(componentName: componentName)
         }
 
-        mutating public func update(using dynamicData: DynamicData) {
+        public func update(using dynamicData: DynamicData) {
             self.dynamicData.dictionary = dynamicData.dictionary
             self.dynamicData.updateValues(componentName: componentName)
         }

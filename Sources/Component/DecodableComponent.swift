@@ -2,4 +2,4 @@
 
 import Foundation
 
-public protocol DecodableComponent: Component, Decodable {}
+public protocol DecodableComponent: Component, Decodable where Content: Decodable {}
