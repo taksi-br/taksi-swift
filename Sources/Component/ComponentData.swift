@@ -2,6 +2,10 @@
 
 import Foundation
 
+extension CodingUserInfoKey {
+    static let dynamicDataTypes = CodingUserInfoKey(rawValue: "DynamicDataTypes")!
+}
+
 public struct ComponentData: Decodable {
     private enum CodingKeys: String, CodingKey {
         case identifier

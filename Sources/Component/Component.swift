@@ -4,12 +4,12 @@ import Foundation
 
 public protocol Component: AnyObject {
     associatedtype Content: ComponentContent
-    associatedtype View: ComponentView
+    associatedtype View: ScreenInterface
 
     var identifier: String { get }
     var requiresData: Bool { get set }
     var content: Content { get }
-    func view(renderMode: ComponentViewRenderModeBinding) -> View?
+    func view(onAction: @escaping (Action) -> Void) -> View?
 }
 
-public protocol ComponentContent {}
+public protocol ComponentContent: AnyObject {}

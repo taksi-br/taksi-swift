@@ -3,13 +3,13 @@
 import Combine
 import SwiftUI
 
-public protocol ComponentView {
-    func asSwiftUIView() -> AnyView?
-    func asUIKitView() -> UIView?
+public protocol ScreenInterface {
+    func asView() -> AnyView?
+    func asUIView() -> UIView?
 }
 
-public extension ComponentView {
-    func asSwiftUIView() -> AnyView? {
+public extension ScreenInterface {
+    func asView() -> AnyView? {
         guard let view = self as? any View else {
             return nil
         }
@@ -17,7 +17,7 @@ public extension ComponentView {
         return AnyView(view)
     }
 
-    func asUIKitView() -> UIView? {
+    func asUIView() -> UIView? {
         return self as? UIView
     }
 }

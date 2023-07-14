@@ -9,7 +9,3 @@ public struct InterfaceData: Decodable {
 
     public let values: [ComponentData]
 }
-
-extension CodingUserInfoKey {
-    static let dynamicDataTypes = CodingUserInfoKey(rawValue: "DynamicDataTypes")!
-}

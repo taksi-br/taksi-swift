@@ -2,23 +2,23 @@
 
 import Foundation
 
-open class BaseComponent<Content: ComponentContent, View: ComponentView>: Component {
+open class BaseComponent<Content: ComponentContent, View: ScreenInterface>: Component {
     public let identifier: String
     public var requiresData: Bool
     public var content: Content
 
-    init(identifier: String, requiresData: Bool, content: Content) {
+    public init(identifier: String, requiresData: Bool, content: Content) {
         self.identifier = identifier
         self.requiresData = requiresData
         self.content = content
     }
 
-    public func view(renderMode: ComponentViewRenderModeBinding) -> View? {
+    open func view(onAction: @escaping (Action) -> Void) -> View? {
         return nil
     }
 }
 
-open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: ComponentView>:
+open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: ScreenInterface>:
     BaseComponent<Content, View>,
     DecodableComponent {
     private enum CodingKeys: String, CodingKey {

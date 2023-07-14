@@ -24,7 +24,7 @@ public protocol DynamicComponentContent: ComponentContent {
     associatedtype DynamicData: DynamicComponentData
 
     var dynamicData: DynamicData { get set }
-    mutating func update(using dynamicData: DynamicData)
+    func update(using dynamicData: DynamicData)
 }
 
 public protocol DynamicComponentData: Decodable {}
