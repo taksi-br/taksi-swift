@@ -4,7 +4,7 @@ import Foundation
 
 public protocol Component: AnyObject {
     associatedtype Content: ComponentContent
-    associatedtype View: ScreenInterface
+    associatedtype View: ViewRepresentable
 
     var identifier: String { get }
     var requiresData: Bool { get set }

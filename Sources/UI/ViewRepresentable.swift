@@ -2,12 +2,12 @@
 
 import SwiftUI
 
-public protocol ScreenInterface {
+public protocol ViewRepresentable {
     func asView() -> AnyView?
     func asUIView() -> UIView?
 }
 
-public extension ScreenInterface {
+public extension ViewRepresentable {
     func asView() -> AnyView? {
         guard let view = self as? any View else {
             return nil

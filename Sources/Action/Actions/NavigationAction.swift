@@ -3,5 +3,5 @@
 import Foundation
 
 public protocol NavigationAction: Action {
-    func view(onAction: @escaping (Action) -> Void) -> ScreenInterface
+    func view(onAction: @escaping (Action) -> Void) -> ViewRepresentable
 }

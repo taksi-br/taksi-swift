@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-public struct CollectionComponentView: View, ScreenInterface {
+public struct CollectionComponentView: View, ViewRepresentable {
     @State var content: CollectionComponent.Content
     let onAction: (Action) -> Void
 

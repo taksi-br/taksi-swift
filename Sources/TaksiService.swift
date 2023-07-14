@@ -7,18 +7,18 @@ public protocol TaksiServiceProtocol {
     func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]
 }
 
-public final class TaksiService: TaksiServiceProtocol {
+open class TaksiService: TaksiServiceProtocol {
     private let apiClient: TaksiAPIClient
 
     public init(apiClient: TaksiAPIClient) {
         self.apiClient = apiClient
     }
 
-    public func fetchInitialComponents(for path: String) async -> [any Component] {
+    open func fetchInitialComponents(for path: String) async -> [any Component] {
         return await apiClient.fetchInterface(for: path).components.map(\.component)
     }
 
-    public func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component] {
+    open func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component] {
         let dynamicComponents = components.compactMap {
             return $0 as? any DynamicComponent
         }

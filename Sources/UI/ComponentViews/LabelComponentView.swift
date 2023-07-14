@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-public struct LabelComponentView: View, ScreenInterface {
+public struct LabelComponentView: View, ViewRepresentable {
     @State var content: LabelComponent.Content
     let onAction: (Action) -> Void
 

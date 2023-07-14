@@ -2,7 +2,7 @@
 
 import Foundation
 
-open class BaseComponent<Content: ComponentContent, View: ScreenInterface>: Component {
+open class BaseComponent<Content: ComponentContent, View: ViewRepresentable>: Component {
     public let identifier: String
     public var requiresData: Bool
     public var content: Content
@@ -18,7 +18,7 @@ open class BaseComponent<Content: ComponentContent, View: ScreenInterface>: Comp
     }
 }
 
-open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: ScreenInterface>:
+open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: ViewRepresentable>:
     BaseComponent<Content, View>,
     DecodableComponent {
     private enum CodingKeys: String, CodingKey {
@@ -35,3 +35,4 @@ open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: S
         super.init(identifier: identifier, requiresData: requiresData, content: content)
     }
 }
+
