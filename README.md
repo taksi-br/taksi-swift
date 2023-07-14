@@ -19,7 +19,7 @@ Taksi is a framework that simplifies backend-driven solutions in Swift.
 
 ## About
 
-`Taksi` is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/taksi-br) and start wiring up your solutions in your `Swift` app.
+`Taksi` is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/orgs/taksi-br/repositories) and start wiring up your solutions in your `Swift` app.
 
 ### Do I need a backend-driven solution in my app?
 
