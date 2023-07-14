@@ -226,6 +226,6 @@ The code above simply creates a `View` agnostic from its components. By telling 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 
-## Contact
+## Contributors
 
-Twitter: [@_matolah](https://twitter.com/_matolah)
+[@_matolah](https://twitter.com/_matolah)
