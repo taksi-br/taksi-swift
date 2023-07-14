@@ -19,7 +19,7 @@ Taksi is a framework that simplifies backend-driven solutions in Swift.
 
 ## About
 
-`Taksi` is a package containing a ready-to-use backend-driven solution. You can easily [integrate your backend with one of our server-side projects](https://github.com/taksi-br) and start wiring up your solutions in your `Swift` app. meaning you can choose to be completely agnostic from third-party libraries or `Swift` frameworks and build your own services, or you can add `LeezyData`'s built-in integration with `CoreData` (for your local database) and `Firestore` (for you remote data).
+`Taksi` is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/taksi-br) and start wiring up your solutions in your `Swift` app.
 
 ### Do I need a backend-driven solution in my app?
 
