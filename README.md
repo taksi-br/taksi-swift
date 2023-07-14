@@ -19,31 +19,35 @@ Taksi is a framework that simplifies backend-driven solutions in Swift.
 
 ## About
 
-`Taksi` is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/orgs/taksi-br/repositories) and start wiring up your solutions in your `Swift` app.
+Taksi is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/orgs/taksi-br/repositories) and start wiring up your solutions in your Swift app.
 
 ### Do I need a backend-driven solution in my app?
 
 Going backend-driven brings your app:
 
-- Less time waiting for Apple reviews, since in most cases you'll only need a backend deployment to make change changes or even change navigation and the layout of the app.
-- Less stress when performing A/B tests. This can be controlled by your backend and the app just needs to know the contracts.
+- Less time waiting for Apple reviews, since in most cases you'll only need a backend deployment to make copy fixes or even change the navigation and the layout of the app.
+- Less stress when performing A/B tests. It all can be controlled by your backend and the app just needs to know the contracts.
 - Little to no business rules in the frontend.
 
 That being said, scalability comes with a price. Your app may need core changes to integrate with backend-driven solutions, which is not an easy decision to make.
 
 ### Overview of the contents
 
-`Taksi`'s main actors are `Interface`s, which are models that contain the data the screen will present, and `Component`s, which serve as blueprints for the different parts of the screen. `ViewRepresentable`s are the representation of `View`s and `UIView`s that `Component`s and `Interface`s may be converted into.
+Taksi's main actors are:
 
-The package also eases the pain of having custom actions triggered by `Component`s, with the use of `Action`s. This model is responsible for telling the app what should be done after a `Component`'s action has been triggered, and also for holding the necessary data.
+- `Interface`: a model that contains the data the screen will present.
+- `Component`: a blueprint for the different parts of the screen.
+- `ViewRepresentable`: the representation of `View`s and `UIView`s that components and interfaces may be converted into.
+
+The package also eases the pain of having custom actions triggered by components, with the use of `Action`. This model is responsible for telling the app what should be done after a `Component` action has been triggered, and also for holding the necessary data.
 
 As for integrating with your backend, `TaksiService` handles the communication between the API, using the `TaksiAPIClient` `Protocol`, and your app when decoding the response payload.
 
-Built-in `Component`s with their respective `ViewRepresentable`s are available to be plugged into your app.
+Built-in components with their respective view representables are available to be plugged into your app.
 
 ## Installation
 
-`Taksi` is available for installation via SPM:
+Taksi is available for installation via SPM:
 
 ```swift
 dependencies: [
@@ -62,7 +66,7 @@ dependencies: [
 
 ### Creating a `Component` with its `ViewRepresentable`
 
-Let's create a simple label component with a dynamic text value for our module:
+Let's create a simple label `Component` with a dynamic text value for our module:
 
 ```swift
 import SwiftUI
@@ -111,11 +115,11 @@ struct ItemComponentView: View, ViewRepresentable {
 }
 ```
 
-The code above creates a `DecodableComponent`, with a dynamic `value` `String` that can be updated at anytime. A `ItemComponentView` `ViewRepresentable` for the `ItemComponent` was created, containing its content and an closure that takes any action as argument so any actor can handle actions as they'd like.
+The code above creates a `DecodableComponent`, with a dynamic `value` `String` that can be updated at anytime. A `ViewRepresentable` for the `ItemComponent` was created, containing its content and an closure that takes any action as argument so any actor can handle actions as they'd like.
 
 ### Making the `Component` discoverable by `Taksi`
 
-To make `Taksi` aware of our new `Component`, we need to create a new feature that is going to handle the creation of our custom types. Features represent modules of your app that implement `FeatureProtocol`.
+To make Taksi aware of our new `Component`, we need to create a new feature that is going to handle the creation of our custom types. Features represent modules of your app that implement `FeatureProtocol`.
 
 ```swift
 import Foundation
@@ -148,11 +152,11 @@ enum ComponentIdentifier: String {
 }
 ```
 
-In order to tell `Taksi` that `ItemComponent` can be received from the backend, we must create an identifier enum that holds the metatypes for our custom `Component`s. Then `MyFeature` can simply decode these metatypes.
+In order to tell Taksi that `ItemComponent` can be received from the backend, we must create an identifier enum that holds the metatypes for our custom components. Then `MyFeature` can simply decode these metatypes.
 
 ### Instantiate the `Component`
 
-It's really simple to initialize `Taksi`'s builder:
+It's really simple to initialize Taksi's builder:
 
 ```swift
 let featureBuilder = FeatureBuilder(features: [MyFeature()])
