@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "jsen",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rogerluan/JSEN",
+      "state" : {
+        "revision" : "dd73b21b170e002c709e397dbfa915c30b47a53b",
+        "version" : "1.2.1"
+      }
+    }
+  ],
+  "version" : 2
+}
