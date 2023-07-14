@@ -17,6 +17,12 @@ public struct ComponentData: Decodable {
     let requiresData: Bool
     let dynamicData: any DynamicComponentData
 
+    public init(identifier: String, requiresData: Bool, dynamicData: any DynamicComponentData) {
+        self.identifier = identifier
+        self.requiresData = requiresData
+        self.dynamicData = dynamicData
+    }
+
     public init(from decoder: Decoder) throws {
         guard let dynamicDataTypes = decoder.userInfo[.dynamicDataTypes] as? [String: any DynamicComponentData.Type] else {
             throw TaksiError.userInfoKeyNotFound
