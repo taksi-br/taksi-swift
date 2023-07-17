@@ -3,8 +3,8 @@
 import Foundation
 
 public protocol TaksiServiceProtocol {
-    func fetchInitialComponents(for path: String) async -> [any Component]
-    func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]
+    func fetchInitialComponents(for path: String) async -> [any Component]?
+    func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]?
 }
 
 open class TaksiService: TaksiServiceProtocol {
@@ -14,11 +14,11 @@ open class TaksiService: TaksiServiceProtocol {
         self.apiClient = apiClient
     }
 
-    open func fetchInitialComponents(for path: String) async -> [any Component] {
-        return await apiClient.fetchInterface(for: path).components.map(\.component)
+    open func fetchInitialComponents(for path: String) async -> [any Component]? {
+        return await apiClient.fetchInterface(for: path)?.components.map(\.component)
     }
 
-    open func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component] {
+    open func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]? {
         let dynamicComponents = components.compactMap {
             return $0 as? any DynamicComponent
         }
@@ -31,8 +31,8 @@ open class TaksiService: TaksiServiceProtocol {
             ($0.identifier, type(of: $0).dynamicDataType())
         })
         
-        let componentsData = await apiClient.fetchInterfaceData(for: path, using: decoder).values
-        componentsData.forEach { componentData in
+        let componentsData = await apiClient.fetchInterfaceData(for: path, using: decoder)?.values
+        componentsData?.forEach { componentData in
             let match = dynamicComponents.first(where: { component in
                 return componentData.identifier == component.identifier
             })
