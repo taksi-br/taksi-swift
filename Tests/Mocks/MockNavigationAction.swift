@@ -19,11 +19,9 @@ final class MockNavigationAction: NavigationAction, DecodableAction, Equatable {
         self.content = content
     }
 
-    private(set) var onAction: ((Action) -> Void)?
     var viewRepresentable = MockViewRepresentable()
 
-    func view(onAction: @escaping (Action) -> Void) -> ViewRepresentable {
-        self.onAction = onAction
+    func view() -> ViewRepresentable {
         return viewRepresentable
     }
 

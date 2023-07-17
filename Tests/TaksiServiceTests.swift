@@ -89,7 +89,7 @@ final class TaksiServiceTests: XCTestCase {
         XCTAssertTrue(apiClientSpy.fetchInterfaceCalled)
         XCTAssertFalse(apiClientSpy.fetchInterfaceDataCalled)
         XCTAssertEqual(apiClientSpy.pathPassed, path)
-        XCTAssertEqual(components.map(\.identifier), apiClientSpy.interfaceToReturn.components.map(\.component.identifier))
+        XCTAssertEqual(components?.map(\.identifier), apiClientSpy.interfaceToReturn?.components.map(\.component.identifier))
     }
 
     func test_updateDynamicComponentsData_whenThereAreDynamicComponents_shouldUpdateMatchedComponents() async {
@@ -102,7 +102,7 @@ final class TaksiServiceTests: XCTestCase {
         let componentData3 = ComponentData(identifier: "no match", requiresData: true, dynamicData: MockDynamicComponent.Content.DynamicData())
         apiClientSpy.interfaceDataToReturn = InterfaceData(values: [componentData1, componentData2, componentData3])
 
-        let components = await service.updateDynamicComponentsData(for: [component1, component2, component3], fetching: path)
+        _ = await service.updateDynamicComponentsData(for: [component1, component2, component3], fetching: path)
 
         XCTAssertFalse(apiClientSpy.fetchInterfaceCalled)
         XCTAssertTrue(apiClientSpy.fetchInterfaceDataCalled)
@@ -118,7 +118,7 @@ final class TaksiServiceTests: XCTestCase {
         let component3 = MockComponent(identifier: "mock 3")
         let path = "mock path"
 
-        let components = await service.updateDynamicComponentsData(for: [component1, component2, component3], fetching: path)
+        _ = await service.updateDynamicComponentsData(for: [component1, component2, component3], fetching: path)
 
         XCTAssertFalse(apiClientSpy.fetchInterfaceCalled)
         XCTAssertFalse(apiClientSpy.fetchInterfaceDataCalled)
