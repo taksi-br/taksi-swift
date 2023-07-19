@@ -18,6 +18,14 @@ final class APIClient: TaksiAPIClient {
     }
 
     func fetchInterfaceData(for path: String, using decoder: JSONDecoder) async -> InterfaceData? {
-        return nil
+        guard let endpoint = Endpoint(rawValue: path), let data = endpoint.interfaceData else {
+            return nil
+        }
+        do {
+            return try decoder.decode(InterfaceData.self, from: data)
+        } catch {
+            print("Error decoding interface: \(error)")
+            return nil
+        }
     }
 }

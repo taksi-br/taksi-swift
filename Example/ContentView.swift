@@ -1,55 +1,46 @@
 // Created by Mateus Lino
 
+import Combine
 import Taksi
 import SwiftUI
 
 struct ContentView: View {
     @StateObject var model: Model
-    @State var viewToNavigate: (any View)?
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                ForEach(
-                    model.components,
-                    id: \.identifier
-                ) { component in
-                    component.view(onAction: onAction(_:))?.asView()
-                }
-            }
-            .padding()
-            .navigationDestination(isPresented: $viewToNavigate.mappedToBool()) {
-                if let viewToNavigate {
-                    AnyView(viewToNavigate)
-                }
-            }
-            .onAppear {
-                Task {
-                    await model.fetchInitialComponents()
-                }
-            }
-        }
-    }
-
-    func onAction(_ action: Action) {
-        if let action = action as? NavigationAction {
-            viewToNavigate = action.view().asView()
+        if model.isLoggedIn {
+            HomeView(model: model.homeViewModel())
+        } else {
+            LandingView(model: model.landingViewModel())
         }
     }
 }
 
 extension ContentView {
     final class Model: ObservableObject {
-        private let dependencies: OnboardingDependencies
+        private let authService: AuthService
+        private let taksiService: TaksiServiceProtocol
 
-        @Published var components = [any Component]()
+        @Published var isLoggedIn = false
 
-        init(dependencies: OnboardingDependencies) {
-            self.dependencies = dependencies
+        init(authService: AuthService, taksiService: TaksiServiceProtocol) {
+            self.authService = authService
+            self.taksiService = taksiService
+            authService.$isLoggedIn
+                .assign(to: &$isLoggedIn)
         }
 
-        @MainActor func fetchInitialComponents() async {
-            components = await dependencies.taksiService.fetchInitialComponents(for: Endpoint.landing.rawValue) ?? []
+        func homeViewModel() -> HomeView.Model {
+            let dependencies = HomeDependencies(taksiService: taksiService)
+            return HomeView.Model(dependencies: dependencies)
+        }
+
+        func landingViewModel() -> LandingView.Model {
+            let dependencies = OnboardingDependencies(
+                authService: authService,
+                taksiService: taksiService
+            )
+            return LandingView.Model(dependencies: dependencies)
         }
     }
 }
@@ -57,8 +48,10 @@ extension ContentView {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let taksiService = TaksiService(apiClient: APIClient())
-        let dependencies = OnboardingDependencies(taksiService: taksiService)
-        let model = ContentView.Model(dependencies: dependencies)
+        let model = ContentView.Model(
+            authService: AuthService(),
+            taksiService: taksiService
+        )
         ContentView(model: model)
     }
 }

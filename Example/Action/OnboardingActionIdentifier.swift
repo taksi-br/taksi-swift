@@ -4,15 +4,15 @@ import Foundation
 import Taksi
 
 enum OnboardingActionIdentifier: String {
-    case onboardingStep = "onboarding_step"
-    case onboardingSuccess = "onboarding_success"
+    case login
+    case loginSuccess = "login_success"
 
     var metatype: any OnboardingDecodableAction.Type {
         switch self {
-        case .onboardingStep:
-            return OnboardingStepAction.self
-        case .onboardingSuccess:
-            return OnboardingSuccessAction.self
+        case .login:
+            return LoginAction.self
+        case .loginSuccess:
+            return LoginSuccessAction.self
         }
     }
 }

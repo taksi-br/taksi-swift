@@ -3,7 +3,7 @@
 import Foundation
 import Taksi
 
-final class OnboardingSuccessAction: OnboardingDecodableAction {
+final class LoginAction: OnboardingDecodableAction, NavigationAction {
     private let dependencies: OnboardingDependencies
 
     init(dependencies: OnboardingDependencies) {
@@ -12,5 +12,9 @@ final class OnboardingSuccessAction: OnboardingDecodableAction {
 
     init(from decoder: Decoder, dependencies: OnboardingDependencies) throws {
         self.dependencies = dependencies
+    }
+
+    func view() -> ViewRepresentable {
+        return LoginView(model: LoginView.Model(dependencies: self.dependencies))
     }
 }

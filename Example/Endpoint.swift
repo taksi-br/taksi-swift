@@ -4,8 +4,8 @@ import Foundation
 
 enum Endpoint: String {
     case landing
-    case onboardingNameStep
-    case onboardingEmailStep
+    case login
+    case home
 
     var interface: Data {
         switch self {
@@ -14,19 +14,22 @@ enum Endpoint: String {
             {
                 "components": [
                     {
-                        "identifier": "landing_spacer_component",
-                        "name": "spacer_component",
-                        "content": {}
+                        "identifier": "landing_labels_component",
+                        "name": "landing_labels_component",
+                        "content": {
+                            "title": "Login and explore a dynamic world",
+                            "subtitle": "Catch a Taksi and get a ride with the backend."
+                        }
                     },
                     {
-                        "identifier": "landing_sign_up_button_component",
+                        "identifier": "landing_sign_in_button_component",
                         "name": "button_component",
                         "content": {
-                            "title": "Sign up",
+                            "title": "Login",
                             "action": {
-                                "identifier": "onboarding_step",
+                                "identifier": "navigation",
                                 "content": {
-                                    "step": "name"
+                                    "interface_identifier": "login"
                                 }
                             }
                         }
@@ -35,63 +38,137 @@ enum Endpoint: String {
             }
             """
             return Data(json.utf8)
-        case .onboardingNameStep:
+        case .login:
             let json = """
             {
                 "components": [
                     {
-                        "identifier": "onboarding_name_text_field_component",
-                        "name": "text_field_component",
-                        "content": {
-                            "placeholder": "Your name"
-                        }
-                    },
-                    {
-                        "identifier": "landing_spacer_component",
-                        "name": "spacer_component",
-                        "content": {}
-                    },
-                    {
-                        "identifier": "onboarding_name_continue_button_component",
-                        "name": "button_component",
-                        "content": {
-                            "title": "Continue",
-                            "action": {
-                                "identifier": "onboarding_step",
-                                "content": {
-                                    "step": "email"
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-            """
-            return Data(json.utf8)
-        case .onboardingEmailStep:
-            let json = """
-            {
-                "components": [
-                    {
-                        "identifier": "onboarding_email_text_field_component",
+                        "identifier": "login_email_text_field_component",
                         "name": "text_field_component",
                         "content": {
                             "placeholder": "Your email"
                         }
                     },
                     {
-                        "identifier": "landing_spacer_component",
+                        "identifier": "login_password_text_field_component",
+                        "name": "text_field_component",
+                        "content": {
+                            "placeholder": "Your password",
+                            "is_secure": true
+                        }
+                    },
+                    {
+                        "identifier": "login_spacer_component",
                         "name": "spacer_component",
                         "content": {}
                     },
                     {
-                        "identifier": "onboarding_email_continue_button_component",
+                        "identifier": "login_continue_button_component",
                         "name": "button_component",
                         "content": {
                             "title": "Continue",
+                            "is_enabled": false,
                             "action": {
-                                "identifier": "onboarding_success"
+                                "identifier": "login_success"
                             }
+                        }
+                    }
+                ]
+            }
+            """
+            return Data(json.utf8)
+        case .home:
+            let json = """
+            {
+                "components": [
+                    {
+                        "identifier": "categories_label_component",
+                        "name": "label_component",
+                        "content": {
+                            "value": "Categories",
+                            "kind": "subtitle"
+                        }
+                    },
+                    {
+                        "identifier": "categories_collection_component",
+                        "name": "collection_component",
+                        "content": {
+                            "component_name": "categories_component",
+                            "values": []
+                        }
+                    },
+                    {
+                        "identifier": "restaurant_label_component",
+                        "name": "label_component",
+                        "content": {
+                            "value": "Restaurants",
+                            "kind": "subtitle"
+                        }
+                    },
+                    {
+                        "identifier": "restaurants_collection_component",
+                        "name": "collection_component",
+                        "content": {
+                            "component_name": "restaurant_component",
+                            "values": []
+                        }
+                    },
+                    {
+                        "identifier": "home_spacer_component",
+                        "name": "spacer_component",
+                        "content": {}
+                    }
+                ]
+            }
+            """
+            return Data(json.utf8)
+        }
+    }
+
+    var interfaceData: Data? {
+        switch self {
+        case .landing, .login:
+            return nil
+        case .home:
+            let json = """
+            {
+                "interface_data": [
+                    {
+                        "identifier": "categories_collection_component",
+                        "content": {
+                            "values": [
+                                {
+                                    "categories": [
+                                        {
+                                            "icon_url": "https://t4.ftcdn.net/jpg/05/85/29/13/360_F_585291338_0J8Q8vYbKDCu8yqqwAO8PsQZ4ESP2zd8.jpg",
+                                            "kind": "american"
+                                        },
+                                        {
+                                            "icon_url": "https://i.pinimg.com/originals/45/eb/98/45eb98c8637d591a1bde451eb1bce941.png",
+                                            "kind": "italian"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "identifier": "restaurants_collection_component",
+                        "content": {
+                            "values": [
+                                {
+                                    "icon_url": "https://designportugal.net/wp-content/uploads/2016/04/m-mcdonalds.jpg",
+                                    "title": "McDonald's",
+                                    "kind": "american",
+                                    "rating": 3.8
+                                },
+                                {
+                                    "icon_url": "https://assets.b9.com.br/wp-content/uploads/2020/03/dominos-fica-em-casa.jpg",
+                                    "title": "Domino's",
+                                    "kind": "italian",
+                                    "rating": 3.4
+                                }
+                            ]
                         }
                     }
                 ]
@@ -100,4 +177,5 @@ enum Endpoint: String {
             return Data(json.utf8)
         }
     }
+
 }
