@@ -12,15 +12,15 @@ enum TaksiComponentIdentifier: String {
     var metatype: any DecodableComponent.Type {
         switch self {
         case .button:
-            return ButtonComponent.self
+            return ButtonComponent<ButtonComponentView>.self
         case .collection:
             return CollectionComponent.self
         case .label:
-            return LabelComponent.self
+            return LabelComponent<LabelComponentView>.self
         case .spacer:
             return SpacerComponent.self
         case .textField:
-            return TextFieldComponent.self
+            return TextFieldComponent<TextFieldComponentView>.self
         }
     }
 }

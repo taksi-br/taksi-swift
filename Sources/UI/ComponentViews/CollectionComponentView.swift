@@ -7,7 +7,7 @@ public struct CollectionComponentView: View, ViewRepresentable {
     let onAction: (Action) -> Void
 
     public var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ForEach(content.dynamicData.values, id: \.identifier) { item in
                 item.view(onAction: onAction)?.asView()
             }
