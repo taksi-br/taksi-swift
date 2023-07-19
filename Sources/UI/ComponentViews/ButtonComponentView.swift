@@ -2,8 +2,12 @@
 
 import SwiftUI
 
-public struct ButtonComponentView: View, ViewRepresentable {
-    @State var content: ButtonComponent.Content
+public protocol ButtonComponentViewProtocol: View, ViewRepresentable {
+    init(content: ButtonComponent<Self>.Content, onAction: @escaping (Action) -> Void)
+}
+
+public struct ButtonComponentView: ButtonComponentViewProtocol {
+    @State var content: ButtonComponent<ButtonComponentView>.Content
     let onAction: (Action) -> Void
 
     public var body: some View {
@@ -13,28 +17,35 @@ public struct ButtonComponentView: View, ViewRepresentable {
             Text(content.title)
                 .fontWeight(.medium)
         }
-        .buttonStyle(.standard(ofKind: .primary))
+        .disabled(!content.isEnabled)
+        .buttonStyle(.standard(ofKind: content.kind))
+        .modifier(ActivityIndicatorModifier(isLoading: content.isLoading))
+    }
+
+    public init(content: ButtonComponent<ButtonComponentView>.Content, onAction: @escaping (Action) -> Void) {
+        self.content = content
+        self.onAction = onAction
     }
 }
 
-public struct StandardButtonStyle: ButtonStyle {
-    public enum Kind: String, Decodable, Equatable {
-        case primary
-        case secondary
-    }
+public enum StandardButtonComponentKind: String, Decodable, Equatable {
+    case primary
+    case secondary
+}
 
+struct StandardButtonStyle: ButtonStyle {
     private static let pressedOpacity: CGFloat = 0.5
 
-    let kind: Kind
+    let kind: StandardButtonComponentKind
 
-    public func makeBody(configuration: Configuration) -> some View {
+    func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
             .frame(maxWidth: .infinity)
-            .frame(height: 52)
+            .frame(height: ComponentsStyle.standardHeight)
             .foregroundColor(foregroundColor(isPressed: configuration.isPressed))
             .background(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: ComponentsStyle.cornerRadius)
                     .fill(backgroundColor(isPressed: configuration.isPressed))
             )
     }
@@ -63,7 +74,7 @@ public struct StandardButtonStyle: ButtonStyle {
 }
 
 fileprivate extension ButtonStyle where Self == StandardButtonStyle {
-    static func standard(ofKind kind: StandardButtonStyle.Kind) -> StandardButtonStyle {
+    static func standard(ofKind kind: StandardButtonComponentKind) -> StandardButtonStyle {
         return StandardButtonStyle(kind: kind)
     }
 }
