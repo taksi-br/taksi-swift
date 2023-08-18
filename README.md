@@ -11,11 +11,12 @@
 </div>
 
 Taksi is a framework that simplifies backend-driven solutions in Swift.
+
 - [About](#about)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
-- [Contact](#contact)
+- [Contributors](#contributors)
 
 ## About
 
@@ -60,7 +61,6 @@ dependencies: [
   ]
 )
 ```
-
 
 ## Usage
 
