@@ -225,7 +225,7 @@ The code above simply creates a `View` agnostic from its components. By telling 
 
 ## License
 
-Distributed under the GNU General Public License v3.0. See `LICENSE.txt` for more information.
+Distributed under the GNU General Public License v3.0. See [`LICENSE`](/LICENSE) for more information.
 
 ## Contributors
 
