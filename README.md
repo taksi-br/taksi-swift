@@ -208,11 +208,11 @@ extension ContentView {
             self.taksiService = taksiService
         }
 
-        @MainActor func fetchInitialComponents() async {
+        func fetchInitialComponents() async {
             components = await taksiService.fetchInitialComponents(for: "/api_path")
         }
 
-        @MainActor func updateDynamicComponentsData() async {
+        func updateDynamicComponentsData() async {
             components = await taksiService.updateDynamicComponentsData(for: components, fetching: "/api_path")
             
             objectWillChange.send()
