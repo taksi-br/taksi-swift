@@ -7,6 +7,7 @@ public protocol ActionBuilderProtocol {
 }
 
 protocol ActionTypeVisitor {
+    func executableAction(from actionType: ExecutableActionType, using decoder: Decoder) -> Action?
     func navigableAction(from actionType: NavigationActionType, using decoder: Decoder) -> Action?
 }
 
@@ -36,6 +37,10 @@ public final class ActionBuilder: ActionBuilderProtocol {
 }
 
 extension ActionBuilder: ActionTypeVisitor {
+    func executableAction(from actionType: ExecutableActionType, using decoder: Decoder) -> Action? {
+        return ExecutableAction(name: actionType.name)
+    }
+
     func navigableAction(from actionType: NavigationActionType, using decoder: Decoder) -> Action? {
         let identifier = actionType.interfaceIdentifier
         return features.compactMap {

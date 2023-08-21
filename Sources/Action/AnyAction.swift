@@ -24,3 +24,9 @@ public final class AnyAction: Decodable {
         self.action = action
     }
 }
+
+#if DEBUG
+public extension AnyAction {
+    static let mock = AnyAction(action: MockAction())
+}
+#endif
