@@ -8,4 +8,8 @@ open class ExecutableAction: Action {
     public init(name: String) {
         self.name = name
     }
+
+    public init(name: String, decoder: Decoder) {
+        self.name = name
+    }
 }

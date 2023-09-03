@@ -7,32 +7,27 @@ public protocol TextFieldComponentViewProtocol: View, ViewRepresentable {
 }
 
 public struct TextFieldComponentView: TextFieldComponentViewProtocol {
-    @State var content: TextFieldComponent<TextFieldComponentView>.Content
-    @State var text: String = ""
+    @StateObject var content: TextFieldComponent<TextFieldComponentView>.Content
     let identifier: String
     let onAction: (Action) -> Void
 
     public var body: some View {
         textField
             .textFieldStyle(.standard())
-            .onChange(of: text) { text in
-                let action = TextFieldInputAction(textFieldComponentIdentifier: identifier, text: text)
-                onAction(action)
-            }
     }
 
     private var textField: some View {
         ZStack {
             if content.isSecure {
-                SecureField(content.placeholder, text: $text)
+                SecureField(content.placeholder, text: $content.text)
             } else {
-                TextField(content.placeholder, text: $text)
+                TextField(content.placeholder, text: $content.text)
             }
         }
     }
 
     public init(content: TextFieldComponent<TextFieldComponentView>.Content, identifier: String, onAction: @escaping (Action) -> Void) {
-        self.content = content
+        self._content = StateObject(wrappedValue: content)
         self.identifier = identifier
         self.onAction = onAction
     }
