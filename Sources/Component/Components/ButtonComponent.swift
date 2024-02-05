@@ -11,14 +11,14 @@ public final class ButtonComponent<ComponentView: ButtonComponentViewProtocol>: 
             case action
         }
 
-        public let kind: StandardButtonComponentKind
+        public let kind: StandardButtonStyle.Kind
         public let title: String
         public var isEnabled: Bool
         public let action: Action
 
         public var isLoading = false
 
-        public init(kind: StandardButtonComponentKind = .primary, title: String, isEnabled: Bool, action: Action) {
+        public init(kind: StandardButtonStyle.Kind = .primary, title: String, isEnabled: Bool, action: Action) {
             self.kind = kind
             self.title = title
             self.isEnabled = isEnabled
@@ -27,7 +27,7 @@ public final class ButtonComponent<ComponentView: ButtonComponentViewProtocol>: 
 
         required public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            kind = try container.decodeIfPresent(StandardButtonComponentKind.self, forKey: .kind) ?? .primary
+            kind = try container.decodeIfPresent(StandardButtonStyle.Kind.self, forKey: .kind) ?? .primary
             title = try container.decode(String.self, forKey: .title)
             isEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEnabled) ?? true
             action = try container.decode(AnyAction.self, forKey: .action).action

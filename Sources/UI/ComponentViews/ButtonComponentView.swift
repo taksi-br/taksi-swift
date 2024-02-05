@@ -28,53 +28,67 @@ public struct ButtonComponentView: ButtonComponentViewProtocol {
     }
 }
 
-public enum StandardButtonComponentKind: String, Decodable, Equatable {
-    case primary
-    case secondary
-}
+public struct StandardButtonStyle: ButtonStyle {
+    public enum Kind: String, Decodable, Equatable {
+        case primary
+        case secondary
+        case danger
+    }
 
-struct StandardButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
+
     private static let pressedOpacity: CGFloat = 0.5
 
-    let kind: StandardButtonComponentKind
+    let kind: Kind
 
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding()
+            .padding(Spacing.main.regular.value)
             .frame(maxWidth: .infinity)
-            .frame(height: ComponentsStyle.standardHeight)
+            .frame(height: 52)
             .foregroundColor(foregroundColor(isPressed: configuration.isPressed))
             .background(
-                RoundedRectangle(cornerRadius: ComponentsStyle.cornerRadius)
+                RoundedRectangle(cornerRadius: CornerRadius.large)
                     .fill(backgroundColor(isPressed: configuration.isPressed))
             )
+            .font(FontStyle.main.regularMedium.font)
     }
 
     private func foregroundColor(isPressed: Bool) -> Color {
-        let color: Color
+        let originalColor: Color
         switch kind {
         case .primary:
-            color = .white
+            originalColor = CustomColor.main.font.color
         case .secondary:
-            color = .accentColor
+            originalColor = CustomColor.main.primary.color
+        case .danger:
+            originalColor = CustomColor.main.error.color
         }
-        return isPressed ? color.opacity(Self.pressedOpacity) : color
+        return color(from: originalColor, isPressed: isPressed)
+    }
+
+    private func color(from originalColor: Color, isPressed: Bool) -> Color {
+        if isPressed {
+            return originalColor.opacity(Self.pressedOpacity)
+        } else {
+            return originalColor.opacity(isEnabled ? 1 : Self.pressedOpacity)
+        }
     }
 
     private func backgroundColor(isPressed: Bool) -> Color {
-        let color: Color
+        let originalColor: Color
         switch kind {
         case .primary:
-            color = .accentColor
-        case .secondary:
-            color = .clear
+            originalColor = CustomColor.main.primary.color
+        case .secondary, .danger:
+            originalColor = .clear
         }
-        return isPressed ? color.opacity(Self.pressedOpacity) : color
+        return color(from: originalColor, isPressed: isPressed)
     }
 }
 
-fileprivate extension ButtonStyle where Self == StandardButtonStyle {
-    static func standard(ofKind kind: StandardButtonComponentKind) -> StandardButtonStyle {
+extension ButtonStyle where Self == StandardButtonStyle {
+    static func standard(ofKind kind: StandardButtonStyle.Kind) -> StandardButtonStyle {
         return StandardButtonStyle(kind: kind)
     }
 }
