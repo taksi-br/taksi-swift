@@ -35,4 +35,8 @@ jobs:
         run: swiftformat .
 
       - name: Run unit tests
-        run: swift test
+        run: |
+            codebuild test \
+                -scheme Taksi \
+                -destination 'platform=iOS Simulator,name=iPhone 16' \
+                -sdk iphonesimulator
