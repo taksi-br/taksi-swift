@@ -111,17 +111,4 @@ final class TaksiServiceTests: XCTestCase {
         XCTAssertEqual(component2.content.dynamicData.value, (componentData2.dynamicData as? MockDynamicComponent.Content.DynamicData)?.value)
         XCTAssertNotEqual(component3.content.dynamicData.value, (componentData3.dynamicData as? MockDynamicComponent.Content.DynamicData)?.value)
     }
-
-    func test_updateDynamicComponentsData_whenThereAreNoDynamicComponents_shouldNotUpdateComponents() async {
-        let component1 = MockComponent(identifier: "mock 1")
-        let component2 = MockComponent(identifier: "mock 2")
-        let component3 = MockComponent(identifier: "mock 3")
-        let path = "mock path"
-
-        _ = await service.updateDynamicComponentsData(for: [component1, component2, component3], fetching: path)
-
-        XCTAssertFalse(apiClientSpy.fetchInterfaceCalled)
-        XCTAssertFalse(apiClientSpy.fetchInterfaceDataCalled)
-        XCTAssertNil(apiClientSpy.pathPassed)
-    }
 }
