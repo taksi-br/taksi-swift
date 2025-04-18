@@ -1,0 +1,16 @@
+--swiftversion 5.9
+--indent 4
+--allman false
+--wraparguments beforefirst
+--wrapcollections beforefirst
+--commas inline
+--self remove
+--stripunusedargs closure-only
+--header ignore
+--importgrouping alphabetized
+--exclude Generated
+--enable sortedImports
+--enable fileHeader
+--enable sortedSwitchCases
+--enable consecutiveBlankLines
+--enable trailingClosures

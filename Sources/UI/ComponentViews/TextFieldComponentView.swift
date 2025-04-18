@@ -27,7 +27,7 @@ public struct TextFieldComponentView: TextFieldComponentViewProtocol {
     }
 
     public init(content: TextFieldComponent<TextFieldComponentView>.Content, identifier: String, onAction: @escaping (Action) -> Void) {
-        self._content = StateObject(wrappedValue: content)
+        _content = StateObject(wrappedValue: content)
         self.identifier = identifier
         self.onAction = onAction
     }
@@ -39,7 +39,7 @@ struct StandardTextFieldStyle: TextFieldStyle {
             RoundedRectangle(cornerRadius: ComponentsStyle.cornerRadius)
                 .fill(.black.opacity(0.1))
                 .frame(height: ComponentsStyle.standardHeight)
-            
+
             HStack {
                 configuration
             }
@@ -48,8 +48,8 @@ struct StandardTextFieldStyle: TextFieldStyle {
     }
 }
 
-fileprivate extension TextFieldStyle where Self == StandardTextFieldStyle {
+private extension TextFieldStyle where Self == StandardTextFieldStyle {
     static func standard() -> StandardTextFieldStyle {
-        return StandardTextFieldStyle()
+        StandardTextFieldStyle()
     }
 }

@@ -15,7 +15,7 @@ open class TaksiService: TaksiServiceProtocol {
     }
 
     open func fetchInitialComponents(for path: String) async -> [any Component]? {
-        return await apiClient.fetchInterface(for: path)?.components.map(\.component)
+        await apiClient.fetchInterface(for: path)?.components.map(\.component)
     }
 
     open func updateDynamicComponentsData(for components: [any Component], fetching path: String) async -> [any Component]? {
@@ -25,16 +25,16 @@ open class TaksiService: TaksiServiceProtocol {
         guard !dynamicComponents.isEmpty else {
             return components
         }
-        
+
         let decoder = JSONDecoder()
         decoder.userInfo[.dynamicDataTypes] = Dictionary(uniqueKeysWithValues: dynamicComponents.map {
             ($0.identifier, type(of: $0).dynamicDataType())
         })
-        
+
         let componentsData = await apiClient.fetchInterfaceData(for: path, using: decoder)?.values
         componentsData?.forEach { componentData in
             let match = dynamicComponents.first(where: { component in
-                return componentData.identifier == component.identifier
+                componentData.identifier == component.identifier
             })
             guard let match else {
                 return

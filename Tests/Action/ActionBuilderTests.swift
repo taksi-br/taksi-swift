@@ -64,7 +64,7 @@ final class ActionBuilderTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
         return try decoder.decode(AnyAction.self, from: data).action
     }

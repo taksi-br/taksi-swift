@@ -25,7 +25,7 @@ public final class ButtonComponent<ComponentView: ButtonComponentViewProtocol>: 
             self.action = action
         }
 
-        required public init(from decoder: Decoder) throws {
+        public required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             kind = try container.decodeIfPresent(StandardButtonStyle.Kind.self, forKey: .kind) ?? .primary
             title = try container.decode(String.self, forKey: .title)
@@ -35,6 +35,6 @@ public final class ButtonComponent<ComponentView: ButtonComponentViewProtocol>: 
     }
 
     override public func view(onAction: @escaping (Action) -> Void) -> ComponentView? {
-        return ComponentView(content: content, onAction: onAction)
+        ComponentView(content: content, onAction: onAction)
     }
 }

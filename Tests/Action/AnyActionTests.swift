@@ -25,7 +25,7 @@ final class AnyActionTests: XCTestCase {
     }
 
     func test_mockAction_whenActionIsNavigation_andInterfaceIdentifierIsValid_shouldDecode() throws {
-        let id = Int.random(in: 0..<99)
+        let id = Int.random(in: 0 ..< 99)
         let decoder = JSONDecoder()
         let data = Data(
             """
@@ -37,7 +37,7 @@ final class AnyActionTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         let anyAction = try decoder.decode(AnyAction.self, from: data)
@@ -57,7 +57,7 @@ final class AnyActionTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         XCTAssertThrowsError(try decoder.decode(AnyAction.self, from: data))

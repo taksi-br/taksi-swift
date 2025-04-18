@@ -28,12 +28,12 @@ struct CornerRadius: Equatable {
         public let card: CGFloat
 
         public init(
-            `default`: CGFloat,
+            default: CGFloat,
             medium: CGFloat,
             large: CGFloat,
             card: CGFloat
         ) {
-            self.`default` = `default`
+            self.default = `default`
             self.medium = medium
             self.large = large
             self.card = card
@@ -52,7 +52,7 @@ struct CornerRadius: Equatable {
 
     public init(color: Color) {
         self.color = color
-        self.uiColor = UIColor(color)
+        uiColor = UIColor(color)
     }
 
     public init(from decoder: Decoder) throws {
@@ -94,12 +94,12 @@ struct CornerRadius: Equatable {
     let card: CGFloat
 
     init(
-        `default`: CGFloat = 8,
+        default: CGFloat = 8,
         medium: CGFloat = 12,
         large: CGFloat = 16,
         card: CGFloat = 32
     ) {
-        self.`default` = `default`
+        self.default = `default`
         self.medium = medium
         self.large = large
         self.card = card

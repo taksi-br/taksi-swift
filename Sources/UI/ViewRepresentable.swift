@@ -17,6 +17,6 @@ public extension ViewRepresentable {
     }
 
     func asUIView() -> UIView? {
-        return self as? UIView
+        self as? UIView
     }
 }

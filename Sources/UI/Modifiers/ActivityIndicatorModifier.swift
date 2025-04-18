@@ -14,14 +14,14 @@ struct ActivityIndicatorModifier: AnimatableModifier {
             if isLoading {
                 ZStack(alignment: .center) {
                     content
-                        .disabled(self.isLoading)
-                        .blur(radius: self.isLoading ? 2 : 0)
+                        .disabled(isLoading)
+                        .blur(radius: isLoading ? 2 : 0)
 
                     ZStack {
                         ActivityIndicator(isAnimating: .constant(true), style: .large)
                     }
                     .foregroundColor(Color.accentColor)
-                    .opacity(self.isLoading ? 1 : 0)
+                    .opacity(isLoading ? 1 : 0)
                 }
             } else {
                 content
@@ -35,7 +35,7 @@ struct ActivityIndicator: UIViewRepresentable {
     let style: UIActivityIndicatorView.Style
 
     func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        return UIActivityIndicatorView(style: style)
+        UIActivityIndicatorView(style: style)
     }
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {

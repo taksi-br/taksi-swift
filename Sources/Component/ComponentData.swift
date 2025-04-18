@@ -35,7 +35,7 @@ public struct ComponentData: Decodable {
         requiresData = try container.decodeIfPresent(Bool.self, forKey: .requiresData) ?? false
 
         let dynamicDataType = dynamicDataTypes.first {
-            return $0.key == identifier
+            $0.key == identifier
         }
         guard let dynamicDataType = dynamicDataType?.value else {
             throw TaksiError.dynamicDataTypeNotFound

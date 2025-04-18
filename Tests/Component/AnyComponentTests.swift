@@ -40,7 +40,7 @@ final class AnyComponentTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         let anyComponent = try decoder.decode(AnyComponent.self, from: data)
@@ -65,7 +65,7 @@ final class AnyComponentTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         let anyComponent = try decoder.decode(AnyComponent.self, from: data)
@@ -89,7 +89,7 @@ final class AnyComponentTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         XCTAssertThrowsError(try decoder.decode(AnyComponent.self, from: data))

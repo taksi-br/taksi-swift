@@ -19,12 +19,12 @@ public struct CustomColor: Decodable {
         case light
         case placeholder
     }
-    
+
     public enum DecodingError: Error {
         case colorsNotInitialized
         case invalidColor
     }
-    
+
     public struct Main {
         public let primary: CustomColor
         public let secondary: CustomColor
@@ -36,7 +36,7 @@ public struct CustomColor: Decodable {
         public let font: CustomColor
         public let light: CustomColor
         public let placeholder: CustomColor
-        
+
         public init(
             primary: CustomColor,
             secondary: CustomColor,
@@ -61,7 +61,7 @@ public struct CustomColor: Decodable {
             self.placeholder = placeholder
         }
     }
-    
+
     public static var main = Main(
         primary: CustomColor(color: .accentColor),
         secondary: CustomColor(color: .secondary),
@@ -79,12 +79,12 @@ public struct CustomColor: Decodable {
 
     public let color: Color
     public let uiColor: UIColor
-    
+
     public init(color: Color) {
         self.color = color
-        self.uiColor = UIColor(color)
+        uiColor = UIColor(color)
     }
-    
+
     public init(from decoder: Decoder) throws {
         if let customColor = Self.customBuilder?.customColor(from: decoder) {
             self = customColor

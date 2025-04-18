@@ -25,6 +25,6 @@ final class ExecutableActionType: ActionType {
 
 extension ExecutableActionType: VisitableActionType {
     func visit(from visitor: ActionTypeVisitor, using decoder: Decoder) -> Action? {
-        return visitor.executableAction(from: self, using: decoder)
+        visitor.executableAction(from: self, using: decoder)
     }
 }

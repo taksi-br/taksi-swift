@@ -14,7 +14,7 @@ open class BaseComponent<Content: ComponentContent, View: ViewRepresentable>: Co
     }
 
     open func view(onAction: @escaping (Action) -> Void) -> View? {
-        return nil
+        nil
     }
 }
 
@@ -27,7 +27,7 @@ open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: V
         case content
     }
 
-    required public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let identifier = try container.decode(String.self, forKey: .identifier)
         let requiresData = try container.decodeIfPresent(Bool.self, forKey: .requiresData) ?? false
@@ -35,4 +35,3 @@ open class DecodableBaseComponent<Content: ComponentContent & Decodable, View: V
         super.init(identifier: identifier, requiresData: requiresData, content: content)
     }
 }
-

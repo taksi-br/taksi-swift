@@ -28,9 +28,9 @@ public final class ActionBuilder: ActionBuilderProtocol {
     }
 
     private func featureAction(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
-        return features
+        features
             .compactMap {
-                return $0.action(from: decoder, withIdentifier: identifier)
+                $0.action(from: decoder, withIdentifier: identifier)
             }
             .first
     }
@@ -38,17 +38,17 @@ public final class ActionBuilder: ActionBuilderProtocol {
 
 extension ActionBuilder: ActionTypeVisitor {
     func executableAction(from actionType: ExecutableActionType, using decoder: Decoder) -> Action? {
-        return featureAction(from: decoder, withIdentifier: actionType.name) ??
-        ExecutableAction(name: actionType.name, decoder: decoder)
+        featureAction(from: decoder, withIdentifier: actionType.name) ??
+            ExecutableAction(name: actionType.name, decoder: decoder)
     }
 
     func navigableAction(from actionType: NavigationActionType, using decoder: Decoder) -> Action? {
         let identifier = actionType.interfaceIdentifier
         return features.compactMap {
-            return $0 as? NavigableFeatureProtocol
+            $0 as? NavigableFeatureProtocol
         }
         .compactMap {
-            return $0.navigationAction(from: decoder, withInterfaceIdentifier: identifier)
+            $0.navigationAction(from: decoder, withInterfaceIdentifier: identifier)
         }
         .first
     }

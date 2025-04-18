@@ -29,6 +29,6 @@ final class NavigationActionType: ActionType {
 
 extension NavigationActionType: VisitableActionType {
     func visit(from visitor: ActionTypeVisitor, using decoder: Decoder) -> Action? {
-        return visitor.navigableAction(from: self, using: decoder)
+        visitor.navigableAction(from: self, using: decoder)
     }
 }

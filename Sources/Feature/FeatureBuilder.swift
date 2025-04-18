@@ -9,7 +9,7 @@ public final class FeatureBuilder {
     public init(features: [FeatureProtocol]) {
         actionBuilder = ActionBuilder(features: features)
         componentBuilder = ComponentBuilder(features: features)
-        
+
         AnyAction.builder = actionBuilder
         AnyComponent.builder = componentBuilder
     }

@@ -9,9 +9,9 @@ enum ActionTypeIdentifier: String {
     var metatype: any ActionType.Type {
         switch self {
         case .executable:
-            return ExecutableActionType.self
+            ExecutableActionType.self
         case .navigation:
-            return NavigationActionType.self
+            NavigationActionType.self
         }
     }
 }

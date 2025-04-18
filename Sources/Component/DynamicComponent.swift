@@ -8,7 +8,7 @@ public protocol DynamicComponent: Component where Content: DynamicComponentConte
 
 extension DynamicComponent {
     static func dynamicDataType() -> any DynamicComponentData.Type {
-        return Content.DynamicData.self
+        Content.DynamicData.self
     }
 
     func update(using dynamicData: any DynamicComponentData) {

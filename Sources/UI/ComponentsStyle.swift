@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct ComponentsStyle {
+enum ComponentsStyle {
     static let cornerRadius: CGFloat = 10
     static let standardHeight: CGFloat = 52
 }

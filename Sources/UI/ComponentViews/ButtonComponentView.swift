@@ -55,33 +55,31 @@ public struct StandardButtonStyle: ButtonStyle {
     }
 
     private func foregroundColor(isPressed: Bool) -> Color {
-        let originalColor: Color
-        switch kind {
+        let originalColor: Color = switch kind {
         case .primary:
-            originalColor = CustomColor.main.font.color
+            CustomColor.main.font.color
         case .secondary:
-            originalColor = CustomColor.main.primary.color
+            CustomColor.main.primary.color
         case .danger:
-            originalColor = CustomColor.main.error.color
+            CustomColor.main.error.color
         }
         return color(from: originalColor, isPressed: isPressed)
     }
 
     private func color(from originalColor: Color, isPressed: Bool) -> Color {
         if isPressed {
-            return originalColor.opacity(Self.pressedOpacity)
+            originalColor.opacity(Self.pressedOpacity)
         } else {
-            return originalColor.opacity(isEnabled ? 1 : Self.pressedOpacity)
+            originalColor.opacity(isEnabled ? 1 : Self.pressedOpacity)
         }
     }
 
     private func backgroundColor(isPressed: Bool) -> Color {
-        let originalColor: Color
-        switch kind {
+        let originalColor: Color = switch kind {
         case .primary:
-            originalColor = CustomColor.main.primary.color
-        case .secondary, .danger:
-            originalColor = .clear
+            CustomColor.main.primary.color
+        case .danger, .secondary:
+            .clear
         }
         return color(from: originalColor, isPressed: isPressed)
     }
@@ -89,6 +87,6 @@ public struct StandardButtonStyle: ButtonStyle {
 
 extension ButtonStyle where Self == StandardButtonStyle {
     static func standard(ofKind kind: StandardButtonStyle.Kind) -> StandardButtonStyle {
-        return StandardButtonStyle(kind: kind)
+        StandardButtonStyle(kind: kind)
     }
 }

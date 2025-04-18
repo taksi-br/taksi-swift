@@ -36,7 +36,7 @@ final class ComponentBuilderTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
         featureSpy.componentToReturn = MockComponent(identifier: "")
 
@@ -48,7 +48,7 @@ final class ComponentBuilderTests: XCTestCase {
     }
 
     private func decodedComponent(withData data: Data) throws -> any Component {
-        return try JSONDecoder().decode(AnyComponent.self, from: data).component
+        try JSONDecoder().decode(AnyComponent.self, from: data).component
     }
 
     func test_component_whenComponentIsKnownToCore_shouldDecodeCoreComponent() throws {
@@ -64,7 +64,7 @@ final class ComponentBuilderTests: XCTestCase {
                 }
             }
             """
-                .utf8
+            .utf8
         )
 
         let component = try decodedComponent(withData: data)

@@ -24,11 +24,11 @@ public struct LabelComponentView: LabelComponentViewProtocol {
     private func font() -> Font {
         switch content.kind {
         case .title:
-            return .title
+            .title
         case .subtitle:
-            return .title2
+            .title2
         case .body:
-            return .body
+            .body
         }
     }
 }

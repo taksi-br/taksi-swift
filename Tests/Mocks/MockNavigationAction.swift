@@ -22,10 +22,10 @@ final class MockNavigationAction: NavigationAction, DecodableAction, Equatable {
     var viewRepresentable = MockViewRepresentable()
 
     func view() -> ViewRepresentable {
-        return viewRepresentable
+        viewRepresentable
     }
 
     static func == (lhs: MockNavigationAction, rhs: MockNavigationAction) -> Bool {
-        return lhs.content.id == rhs.content.id
+        lhs.content.id == rhs.content.id
     }
 }

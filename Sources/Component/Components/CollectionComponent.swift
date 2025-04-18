@@ -4,13 +4,13 @@ import Foundation
 import JSEN
 
 public class CollectionComponent: DecodableBaseComponent<CollectionComponent.Content, CollectionComponentView>, DynamicComponent {
-    public override func view(onAction: @escaping (Action) -> Void) -> CollectionComponentView? {
-        return CollectionComponentView(content: content, onAction: onAction)
+    override public func view(onAction: @escaping (Action) -> Void) -> CollectionComponentView? {
+        CollectionComponentView(content: content, onAction: onAction)
     }
 }
 
-extension CollectionComponent {
-    public final class Content: DynamicComponentContent, Decodable {
+public extension CollectionComponent {
+    final class Content: DynamicComponentContent, Decodable {
         private enum CodingKeys: String, CodingKey {
             case componentName = "component_name"
         }
@@ -18,7 +18,7 @@ extension CollectionComponent {
         private let componentName: String
         public var dynamicData: DynamicData
 
-        required public init(from decoder: Decoder) throws {
+        public required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             componentName = try container.decode(String.self, forKey: .componentName)
             dynamicData = try DynamicData(from: decoder)
@@ -32,8 +32,8 @@ extension CollectionComponent {
     }
 }
 
-extension CollectionComponent.Content {
-    public struct DynamicData: DynamicComponentData, Equatable {
+public extension CollectionComponent.Content {
+    struct DynamicData: DynamicComponentData, Equatable {
         private enum CodingKeys: String, CodingKey {
             case values
         }
@@ -49,12 +49,12 @@ extension CollectionComponent.Content {
         }
 
         public static func == (lhs: CollectionComponent.Content.DynamicData, rhs: CollectionComponent.Content.DynamicData) -> Bool {
-            return lhs.values.map(\.identifier) == rhs.values.map(\.identifier)
+            lhs.values.map(\.identifier) == rhs.values.map(\.identifier)
         }
 
         fileprivate mutating func updateValues(componentName: String) {
             values = dictionary.compactMap {
-                return try? AnyComponent(componentName: componentName, from: $0).component
+                try? AnyComponent(componentName: componentName, from: $0).component
             }
         }
     }

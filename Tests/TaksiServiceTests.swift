@@ -26,7 +26,7 @@ final class TaksiServiceTests: XCTestCase {
                 self.dynamicData = dynamicData
             }
 
-            required public init(from decoder: Decoder) throws {
+            public required init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
                 dynamicData = try container.decode(DynamicData.self)
             }
@@ -35,7 +35,7 @@ final class TaksiServiceTests: XCTestCase {
                 self.dynamicData.value = dynamicData.value
             }
         }
-        
+
         private enum CodingKeys: String, CodingKey {
             case identifier
             case requiresData = "requires_data"
@@ -60,7 +60,7 @@ final class TaksiServiceTests: XCTestCase {
         }
 
         func view(onAction: @escaping (Action) -> Void) -> MockViewRepresentable? {
-            return nil
+            nil
         }
     }
 

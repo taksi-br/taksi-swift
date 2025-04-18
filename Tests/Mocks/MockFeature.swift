@@ -11,7 +11,7 @@ struct MockFeature: NavigableFeatureProtocol {
         var metatype: any DecodableAction.Type {
             switch self {
             case .mock:
-                return MockNavigationAction.self
+                MockNavigationAction.self
             }
         }
     }
@@ -22,13 +22,13 @@ struct MockFeature: NavigableFeatureProtocol {
         var metatype: any DecodableComponent.Type {
             switch self {
             case .mock:
-                return MockComponent.self
+                MockComponent.self
             }
         }
     }
 
     func action(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
-        return try? ActionIdentifier(rawValue: identifier)?.metatype.init(from: decoder)
+        try? ActionIdentifier(rawValue: identifier)?.metatype.init(from: decoder)
     }
 
     func component(from decoder: Decoder, withName name: String) -> (any Component)? {
@@ -41,6 +41,6 @@ struct MockFeature: NavigableFeatureProtocol {
     }
 
     func navigationAction(from decoder: Decoder, withInterfaceIdentifier interfaceIdentifier: String) -> NavigationAction? {
-        return action(from: decoder, withIdentifier: interfaceIdentifier) as? NavigationAction
+        action(from: decoder, withIdentifier: interfaceIdentifier) as? NavigationAction
     }
 }

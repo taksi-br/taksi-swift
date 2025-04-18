@@ -38,6 +38,6 @@ final class MockComponent: DecodableComponent, Equatable {
     }
 
     static func == (lhs: MockComponent, rhs: MockComponent) -> Bool {
-        return lhs.identifier == rhs.identifier
+        lhs.identifier == rhs.identifier
     }
 }
