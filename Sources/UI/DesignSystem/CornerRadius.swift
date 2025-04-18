@@ -4,34 +4,28 @@ import SwiftUI
 
 struct CornerRadius: Equatable {
     private enum CodingKeys: String, CodingKey, CaseIterable {
-        case primary
-        case secondary
-        case background
-        case dark
-        case success
-        case error
-        case warning
-        case font
-        case light
-        case placeholder
+        case `default`
+        case medium
+        case large
+        case card
     }
 
     public enum DecodingError: Error {
-        case colorsNotInitialized
-        case invalidColor
+        case cornerRadiiNotInitialized
+        case invalidCornerRadius
     }
 
     public struct Main {
-        public let `default`: CGFloat
-        public let medium: CGFloat
-        public let large: CGFloat
-        public let card: CGFloat
+        public let `default`: CornerRadius
+        public let medium: CornerRadius
+        public let large: CornerRadius
+        public let card: CornerRadius
 
         public init(
-            default: CGFloat,
-            medium: CGFloat,
-            large: CGFloat,
-            card: CGFloat
+            default: CornerRadius,
+            medium: CornerRadius,
+            large: CornerRadius,
+            card: CornerRadius
         ) {
             self.default = `default`
             self.medium = medium
@@ -41,68 +35,37 @@ struct CornerRadius: Equatable {
     }
 
     public static var main = Main(
-        default: 8,
-        medium: 12,
-        large: 16,
-        card: 32
+        default: CornerRadius(value: 8),
+        medium: CornerRadius(value: 12),
+        large: CornerRadius(value: 16),
+        card: CornerRadius(value: 32)
     )
 
-    public let color: Color
-    public let uiColor: UIColor
+    public let value: CGFloat
 
-    public init(color: Color) {
-        self.color = color
-        uiColor = UIColor(color)
+    public init(value: CGFloat) {
+        self.value = value
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let customColorCodingKey = try CodingKeys.allCases.first { codingKey in
+        let customCornerRadiusCodingKey = try CodingKeys.allCases.first { codingKey in
             try container.decodeIfPresent(String.self, forKey: codingKey) != nil
         }
-        guard let customColorCodingKey else {
-            throw DecodingError.invalidColor
+        guard let customCornerRadiusCodingKey else {
+            throw DecodingError.invalidCornerRadius
         }
 
-        switch customColorCodingKey {
-        case .primary:
-            self = Self.main.primary
-        case .secondary:
-            self = Self.main.secondary
-        case .background:
-            self = Self.main.background
-        case .dark:
-            self = Self.main.dark
-        case .success:
-            self = Self.main.success
-        case .error:
-            self = Self.main.error
-        case .warning:
-            self = Self.main.warning
-        case .font:
-            self = Self.main.font
-        case .light:
-            self = Self.main.light
-        case .placeholder:
-            self = Self.main.placeholder
+        switch customCornerRadiusCodingKey {
+        case .default:
+            self = Self.main.default
+        case .medium:
+            self = Self.main.medium
+        case .large:
+            self = Self.main.large
+        case .card:
+            self = Self.main.card
         }
-    }
-
-    let `default`: CGFloat
-    let medium: CGFloat
-    let large: CGFloat
-    let card: CGFloat
-
-    init(
-        default: CGFloat = 8,
-        medium: CGFloat = 12,
-        large: CGFloat = 16,
-        card: CGFloat = 32
-    ) {
-        self.default = `default`
-        self.medium = medium
-        self.large = large
-        self.card = card
     }
 }
 

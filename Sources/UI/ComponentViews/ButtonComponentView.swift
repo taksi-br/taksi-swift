@@ -48,7 +48,7 @@ public struct StandardButtonStyle: ButtonStyle {
             .frame(height: 52)
             .foregroundColor(foregroundColor(isPressed: configuration.isPressed))
             .background(
-                RoundedRectangle(cornerRadius: CornerRadius.large)
+                RoundedRectangle(cornerRadius: CornerRadius.main.large.value)
                     .fill(backgroundColor(isPressed: configuration.isPressed))
             )
             .font(FontStyle.main.regularMedium.font)

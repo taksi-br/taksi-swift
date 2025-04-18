@@ -49,9 +49,9 @@ final class AnyComponentTests: XCTestCase {
     }
 
     func test_mockComponent_whenNameIsKnownToCore_shouldDecodeCoreComponent() throws {
-        let identifier = UUID().uuidString
-        let requiresData = Bool.random()
-        let value = "Mock value"
+        _ = UUID().uuidString
+        _ = Bool.random()
+        _ = "Mock value"
         let decoder = JSONDecoder()
         let data = Data(
             """
