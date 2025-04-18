@@ -4,51 +4,34 @@
   <h3 align="center">Taksi</h3>
 
   <p align="center">
+    Backend-driven UI made simple in Swift.
+    <br />
     <a href="https://github.com/matolah/taksi-br/taksi-swift/issues">Report Bug</a>
     ·
     <a href="https://github.com/matolah/taksi-br/taksi-swift/issues">Request Feature</a>
   </p>
 </div>
 
-Taksi is a framework that simplifies backend-driven solutions in Swift.
+---
 
-- [About](#about)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-- [Contributors](#contributors)
+## 🚖 What is Taksi?
 
-## About
+**Taksi** is a backend-driven UI framework for Swift.  
+It enables your app to dynamically render interfaces and respond to backend-provided actions — minimizing hardcoded UI and logic.
 
-Taksi is a package containing a ready-to-use backend-driven solution so you can build agnostic flows. You can easily [integrate your backend with one of our server-side projects](https://github.com/orgs/taksi-br/repositories) and start wiring up your solutions in your Swift app.
+Use it to:
 
-### Do I need a backend-driven solution in my app?
+- Reduce App Store review cycles by shipping updates from your backend.
+- Perform A/B testing without frontend releases.
+- Separate UI layout and business rules from the frontend.
 
-Going backend-driven brings your app:
+Built to scale with clear abstractions, Taksi helps you create clean and adaptable UI architectures.
 
-- Less time waiting for Apple reviews, since in most cases you'll only need a backend deployment to make copy fixes or even change the navigation and the layout of the app.
-- Less stress when performing A/B tests. It all can be controlled by your backend and the app just needs to know the contracts.
-- Little to no business rules in the frontend.
+---
 
-That being said, scalability comes with a price. Your app may need core changes to integrate with backend-driven solutions, which is not an easy decision to make.
+## 📦 Installation
 
-### Overview of the contents
-
-Taksi's main actors are:
-
-- `Interface`: a model that contains the data the screen will present.
-- `Component`: a blueprint for the different parts of the screen.
-- `ViewRepresentable`: the representation of `View`s and `UIView`s that components and interfaces may be converted into.
-
-The package also eases the pain of having custom actions triggered by components, with the use of `Action`. This model is responsible for telling the app what should be done after a `Component` action has been triggered, and also for holding the necessary data.
-
-As for integrating with your backend, `TaksiService` handles the communication between the API, using the `TaksiAPIClient` `Protocol`, and your app when decoding the response payload.
-
-Built-in components with their respective view representables are available to be plugged into your app.
-
-## Installation
-
-Taksi is available for installation via SPM:
+Install via **Swift Package Manager**:
 
 ```swift
 dependencies: [
@@ -57,16 +40,16 @@ dependencies: [
 .target(
     name: "MyApp",
     dependencies: [
-      .product(name: "Taksi", package: "Taksi")
-  ]
+        .product(name: "Taksi", package: "Taksi")
+    ]
 )
 ```
 
-## Usage
+---
 
-### Creating a `Component` with its `ViewRepresentable`
+## 🚀 Usage
 
-Let's create a simple label `Component` with a dynamic text value for our module:
+### 🧱 1. Define a `Component` and its `ViewRepresentable`
 
 ```swift
 import SwiftUI
@@ -117,26 +100,11 @@ struct ItemComponentView: View, ViewRepresentable {
 }
 ```
 
-The code above creates a `DecodableComponent`, with a dynamic `value` `String` that can be updated at anytime. A `ViewRepresentable` for the `ItemComponent` was created, containing its content and an closure that takes any action as argument so any actor can handle actions as they'd like.
+Create a `Component` with dynamic data and link it to a SwiftUI `ViewRepresentable`. The component can trigger actions and be updated at runtime.
 
-### Making the `Component` discoverable by `Taksi`
+---
 
-To make Taksi aware of our new `Component`, we need to create a new feature that is going to handle the creation of our custom types. Features represent modules of your app that implement `FeatureProtocol`.
-
-```swift
-import Foundation
-import Taksi
-
-struct MyFeature: FeatureProtocol {
-    func action(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
-        return nil
-    }
-
-    func component(from decoder: Decoder, withName name: String) -> (any Component)? {
-        return try? ComponentIdentifier(rawValue: name)?.metatype.init(from: decoder)
-    }
-}
-```
+### 🧩 2. Register Your Component with Taksi
 
 ```swift
 import Foundation
@@ -152,19 +120,27 @@ enum ComponentIdentifier: String {
         }
     }
 }
+
+struct MyFeature: FeatureProtocol {
+    func action(from decoder: Decoder, withIdentifier identifier: String) -> Action? {
+        return nil
+    }
+
+    func component(from decoder: Decoder, withName name: String) -> (any Component)? {
+        return try? ComponentIdentifier(rawValue: name)?.metatype.init(from: decoder)
+    }
+}
 ```
 
-In order to tell Taksi that `ItemComponent` can be received from the backend, we must create an identifier enum that holds the metatypes for our custom components. Then `MyFeature` can simply decode these metatypes.
+Use `ComponentIdentifier` and a `Feature` to let Taksi know how to decode your component.
 
-### Instantiate the `Component`
+---
 
-It's really simple to initialize Taksi's builder:
+### 🛠️ 3. Build and Use the Components in Your Views
 
 ```swift
 let featureBuilder = FeatureBuilder(features: [MyFeature()])
 ```
-
-And now we're ready to instantiate our `View` with our custom `Component`:
 
 ```swift
 import SwiftUI
@@ -221,12 +197,40 @@ extension ContentView {
 }
 ```
 
-The code above simply creates a `View` agnostic from its components. By telling `TaksiService` to fetch initial components, the `View` can render its skeleton without busy waiting, and then it can fetch and update all the dynamic data under the hood.
+Use `TaksiService` to fetch backend-defined interfaces and dynamically render their components with full SwiftUI support.
 
-## License
+---
 
-Distributed under the GNU General Public License v3.0. See [`LICENSE`](/LICENSE) for more information.
+## 🔍 Architecture Overview
 
-## Contributors
+Taksi revolves around the following concepts:
 
-[@_matolah](https://twitter.com/_matolah)
+| Concept       | Description |
+|---------------|-------------|
+| `Interface`   | Describes a complete screen from the backend. |
+| `Component`   | A reusable piece of the screen UI. |
+| `ViewRepresentable` | Bridges your components to SwiftUI or UIKit. |
+| `Action`      | Defines what happens when a component is interacted with. |
+| `TaksiService`| Coordinates networking and component decoding. |
+
+---
+
+## 🧠 Example Use Cases
+
+- Feature flag-based UIs.
+- Remote onboarding flows.
+- Dynamic marketing pages and promotions.
+- Prototyping app flows with backend control.
+
+---
+
+## 📄 License
+
+Distributed under the **GNU General Public License v3.0**.  
+See [`LICENSE.txt`](LICENSE.txt) for more details.
+
+---
+
+## ✨ Contributors
+
+Maintained by [@_matolah](https://twitter.com/_matolah)
